@@ -1,0 +1,6 @@
+{
+  "name": "LinguaBridge",
+  "description": "Interactive multi-page Language Learning Web Application built with Python Flask, SQLite, Bootstrap 5, and Web Speech API supporting Spanish, French, German, English, Hindi, Japanese, and Marathi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

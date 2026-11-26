@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-bs-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LinguaBridge — Interactive Language Learning</title>
+    <meta name="description" content="Learn Spanish, French, German, English, Hindi, Japanese, and Marathi with native scripts, audio pronunciation, and interactive quizzes." />
+    <meta property="og:title" content="LinguaBridge — Interactive Language Learning" />
+    <meta property="og:description" content="Learn Spanish, French, German, English, Hindi, Japanese, and Marathi with native scripts, audio pronunciation, and interactive quizzes." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script>
+      (function () {
+        try {
+          const saved = localStorage.getItem("linguabridge_theme_v1");
+          if (saved === "dark" || saved === "light") {
+            document.documentElement.setAttribute("data-theme", saved);
+            document.documentElement.setAttribute("data-bs-theme", saved);
+          }
+        } catch (_) {}
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+JP:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body class="d-flex flex-column min-vh-100">
+    <!-- Floating Teal & Amber Ambient Orbs -->
+    <div class="lb-ambient-orbs" aria-hidden="true">
+      <div class="lb-orb lb-orb-1"></div>
+      <div class="lb-orb lb-orb-2"></div>
+      <div class="lb-orb lb-orb-3"></div>
+    </div>
+
+    <!-- Shared Liquid Glass Top Navigation Bar -->
+    <header class="sticky-top">
+      <nav class="navbar navbar-expand-lg lb-navbar" aria-label="Primary navigation">
+        <div class="container">
+          <a class="lb-brand" href="#home" data-route="home">
+            <span class="lb-brand-mark" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 18V9a8 8 0 0 1 16 0v9" />
+                <path d="M2 18h20" />
+                <path d="M8 18v-5a4 4 0 0 1 8 0v5" />
+              </svg>
+            </span>
+            <span>LinguaBridge</span>
+          </a>
+
+          <button
+            class="navbar-toggler border-0 shadow-none"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNav"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="mainNav">
+            <!-- Logged-out Nav Links -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3" id="navGuestLinks">
+              <li class="nav-item">
+                <a class="nav-link lb-nav-link active" href="#home" data-route="home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link lb-nav-link" href="#login" data-route="login">Login</a>
+              </li>
+            </ul>
+
+            <!-- Logged-in Nav Links -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-3 d-none" id="navAuthLinks">
+              <li class="nav-item">
+                <a class="nav-link lb-nav-link" href="#dashboard" data-route="dashboard">Learn &amp; Quiz</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link lb-nav-link" href="#profile" data-route="profile">User Profile</a>
+              </li>
+            </ul>
+
+            <!-- Right Zone: Theme Switch + Auth Actions -->
+            <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mt-lg-0">
+              <!-- iOS Dark / Light Mode Toggle Switch -->
+              <label class="lb-theme-toggle-wrap ios-switch-label" for="themeModeToggle" title="Toggle Dark / Light Mode">
+                <i class="bi bi-sun-fill lb-theme-icon lb-theme-icon-sun" aria-hidden="true"></i>
+                <span class="ios-switch">
+                  <input type="checkbox" id="themeModeToggle" aria-label="Toggle Dark Mode" />
+                  <span class="ios-switch-slider"></span>
+                </span>
+                <i class="bi bi-moon-stars-fill lb-theme-icon lb-theme-icon-moon" aria-hidden="true"></i>
+              </label>
+
+              <!-- Guest Action Buttons -->
+              <div class="d-flex flex-wrap align-items-center gap-2" id="navGuestActions">
+                <button type="button" class="btn btn-lb-demo btn-sm px-3 py-2" data-action="demo-login">
+                  Demo Quick Login
+                </button>
+                <a href="#register" data-route="register" class="btn btn-lb-primary btn-sm px-3 py-2">
+                  Register
+                </a>
+              </div>
+
+              <!-- Logged-in User Badge & Logout -->
+              <div class="d-flex flex-wrap align-items-center gap-2 d-none" id="navAuthActions">
+                <a href="#profile" data-route="profile" class="lb-user-badge" title="Open User Profile">
+                  <span class="lb-user-avatar" id="navUserInitial" aria-hidden="true">A</span>
+                  <span id="navUserName">Learner</span>
+                </a>
+                <button type="button" class="btn btn-lb-outline btn-sm px-3 py-2" id="navLogoutBtn">
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Global Alert Banner -->
+    <div class="container mt-3 d-none" id="globalAlertWrap" aria-live="polite">
+      <div class="alert lb-alert-banner d-flex align-items-center justify-content-between gap-2 mb-0" id="globalAlertBox" role="alert">
+        <div class="d-flex align-items-center gap-2">
+          <i id="globalAlertIcon" class="bi flex-shrink-0" aria-hidden="true"></i>
+          <span id="globalAlertText"></span>
+        </div>
+        <button type="button" class="btn-close" id="globalAlertClose" aria-label="Dismiss message"></button>
+      </div>
+    </div>
+
+    <main class="flex-grow-1">
+      <!-- ==================== HOME VIEW ==================== -->
+      <section id="homeView" class="py-5">
+        <div class="container py-lg-3">
+          <div class="row g-5 align-items-stretch">
+            <!-- Hero Left -->
+            <div class="col-lg-7 d-flex flex-column justify-content-center">
+              <p class="fw-semibold mb-2 lb-text-teal" style="font-size: 0.925rem;">
+                7 Languages &middot; Native Scripts &middot; Live Audio Pronunciation
+              </p>
+              <h1 class="lb-hero-title mb-3">
+                Learn 7 languages with native script, phonetics, and interactive quizzes.
+              </h1>
+              <p class="lb-hero-subtitle mb-4">
+                Practice everyday vocabulary, natural phrases, and grammar across Spanish, French, German, English, Hindi, Japanese, and Marathi. Hear instant pronunciation and track your XP and quiz history right in your browser.
+              </p>
+
+              <!-- Hero CTAs -->
+              <div class="d-flex flex-wrap gap-2 mb-4" id="homeGuestCtas">
+                <a href="#register" data-route="register" class="btn btn-lb-primary btn-lg px-4">
+                  Start Learning Free
+                </a>
+                <a href="#login" data-route="login" class="btn btn-lb-outline btn-lg px-4">
+                  Login
+                </a>
+                <button type="button" class="btn btn-lb-demo btn-lg px-4" data-action="demo-login">
+                  Demo Quick Login
+                </button>
+              </div>
+              <div class="d-flex flex-wrap gap-2 mb-4 d-none" id="homeAuthCtas">
+                <a href="#dashboard" data-route="dashboard" class="btn btn-lb-primary btn-lg px-4">
+                  Continue Learning
+                </a>
+                <a href="#profile" data-route="profile" class="btn btn-lb-outline btn-lg px-4">
+                  View My Profile
+                </a>
+              </div>
+
+              <!-- Interactive 7-Language Pills -->
+              <div>
+                <p class="small fw-semibold lb-text-muted mb-2">
+                  Explore all 7 supported languages (click any language to preview &amp; listen):
+                </p>
+                <div class="d-flex flex-wrap gap-2" id="homeLangPills" role="tablist" aria-label="Supported languages"></div>
+              </div>
+            </div>
+
+            <!-- Hero Right: Live Language Preview Card -->
+            <div class="col-lg-5 d-flex">
+              <div class="lb-glass p-4 p-md-5 w-100 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="d-flex justify-content-between align-items-center mb-3 pb-3 lb-divider-bottom">
+                    <div>
+                      <div class="small fw-semibold lb-text-teal" id="previewScript">
+                        Latin Script
+                      </div>
+                      <h2 class="h4 fw-bold mb-0" id="previewLangTitle">Spanish &middot; Español</h2>
+                    </div>
+                    <span class="font-mono-tabular small lb-text-subtle fw-semibold" id="previewLocale">es-ES</span>
+                  </div>
+
+                  <p class="small lb-text-muted mb-3" id="previewTagline"></p>
+
+                  <div class="lb-glass-inset p-3 mb-3">
+                    <div class="small lb-text-subtle fw-semibold mb-1">Sample Greeting</div>
+                    <div class="lb-native-display mb-2" id="previewNative"></div>
+                    <div class="lb-phonetic-text mb-1" id="previewPhonetic"></div>
+                    <div class="small lb-text-muted" id="previewMeaning"></div>
+                  </div>
+
+                  <div id="homeSpeechNotice" class="lb-speech-notice d-none mb-3" role="status" aria-live="polite"></div>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 pt-2">
+                  <button type="button" class="lb-listen-btn" id="homePreviewListenBtn">
+                    <i class="bi bi-volume-up-fill" aria-hidden="true"></i>
+                    <span>Listen</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-link p-0 text-decoration-none fw-semibold small lb-text-teal"
+                    id="homePreviewStartBtn"
+                  >
+                    Start with Spanish &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clean Proof Strip -->
+          <div class="row g-3 mt-4 pt-4 lb-divider-top">
+            <div class="col-6 col-md-3">
+              <div class="lb-stat-value">7</div>
+              <div class="small lb-text-muted fw-medium">Supported Languages</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="lb-stat-value">42</div>
+              <div class="small lb-text-muted fw-medium">Structured Lesson Cards</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="lb-stat-value">2</div>
+              <div class="small lb-text-muted fw-medium">Audio Speeds (1.0x &amp; 0.65x)</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="lb-stat-value">100%</div>
+              <div class="small lb-text-muted fw-medium">Saved Quiz &amp; Bookmark History</div>
+            </div>
+          </div>
+
+          <!-- 3 Feature Highlight Cards -->
+          <div class="mt-5 pt-2">
+            <div class="mb-4">
+              <h2 class="h3 fw-bold mb-1">Everything you need for steady daily progress</h2>
+              <p class="lb-text-muted mb-0">Built for clarity across Latin, Devanagari, and Japanese writing systems.</p>
+            </div>
+            <div class="row g-4">
+              <div class="col-md-4">
+                <div class="lb-glass lb-glass-hover p-4 h-100">
+                  <div
+                    class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3"
+                    style="width: 44px; height: 44px; background-color: var(--lb-teal-soft); color: var(--lb-teal-text);"
+                  >
+                    <i class="bi bi-translate fs-5" aria-hidden="true"></i>
+                  </div>
+                  <h3 class="h5 fw-bold mb-2">Native Script &amp; Phonetics</h3>
+                  <p class="lb-text-muted mb-0">
+                    Read authentic Devanagari for Hindi and Marathi, Kana &amp; Kanji for Japanese, and accented Latin scripts alongside toggleable Romanized phonetics.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="lb-glass lb-glass-hover p-4 h-100">
+                  <div
+                    class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3"
+                    style="width: 44px; height: 44px; background-color: var(--lb-amber-soft); color: var(--lb-amber-ink);"
+                  >
+                    <i class="bi bi-volume-up fs-5" aria-hidden="true"></i>
+                  </div>
+                  <h3 class="h5 fw-bold mb-2">Audio Pronunciation</h3>
+                  <p class="lb-text-muted mb-0">
+                    Tap Listen on any lesson card to hear locale-matched Web Speech synthesis with a quick Slow Audio (0.65x) toggle for careful listening practice.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-4">
+                <div class="lb-glass lb-glass-hover p-4 h-100">
+                  <div
+                    class="d-inline-flex align-items-center justify-content-center rounded-3 mb-3"
+                    style="width: 44px; height: 44px; background-color: var(--lb-grammar-soft); color: var(--lb-grammar-ink);"
+                  >
+                    <i class="bi bi-patch-check fs-5" aria-hidden="true"></i>
+                  </div>
+                  <h3 class="h5 fw-bold mb-2">Interactive Practice Quizzes</h3>
+                  <p class="lb-text-muted mb-0">
+                    Test your retention with randomized multiple-choice rounds, instant green/red feedback, XP rewards, and saved quiz history in your profile.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== REGISTER VIEW ==================== -->
+      <section id="registerView" class="py-5 d-none">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+              <div class="lb-glass p-4 p-md-5">
+                <div class="mb-4">
+                  <h1 class="h3 fw-bold mb-1">Create your free account</h1>
+                  <p class="lb-text-muted mb-0">
+                    Choose your starting language and daily goal—your progress is saved locally in your browser.
+                  </p>
+                </div>
+
+                <form id="registerForm" novalidate>
+                  <div class="mb-3">
+                    <label for="regFullName" class="form-label">Full Name</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="regFullName"
+                      placeholder="e.g., Priya Sharma"
+                      minlength="2"
+                      maxlength="80"
+                      required
+                      autocomplete="name"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="regEmail" class="form-label">Email Address</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="regEmail"
+                      placeholder="you@example.com"
+                      required
+                      autocomplete="email"
+                    />
+                  </div>
+
+                  <div class="row g-3 mb-3">
+                    <div class="col-sm-6">
+                      <label for="regPreferredLang" class="form-label">Preferred Target Language</label>
+                      <select class="form-select" id="regPreferredLang" required></select>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <label for="regDailyGoal" class="form-label">Daily Learning Goal</label>
+                      <select class="form-select" id="regDailyGoal" required></select>
+                    </div>
+                  </div>
+
+                  <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                      <label for="regPassword" class="form-label">Password</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="regPassword"
+                        placeholder="At least 6 characters"
+                        minlength="6"
+                        required
+                        autocomplete="new-password"
+                      />
+                    </div>
+
+                    <div class="col-sm-6">
+                      <label for="regConfirmPassword" class="form-label">Confirm Password</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="regConfirmPassword"
+                        placeholder="Re-enter password"
+                        minlength="6"
+                        required
+                        autocomplete="new-password"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-lb-primary py-2.5">
+                      Start Learning Free
+                    </button>
+                    <button type="button" class="btn btn-lb-demo py-2" data-action="demo-login">
+                      Or Try Demo Quick Login
+                    </button>
+                  </div>
+                </form>
+
+                <p class="text-center lb-text-muted small mt-4 mb-0">
+                  Already have an account?
+                  <a href="#login" data-route="login" class="fw-semibold text-decoration-none lb-text-teal">
+                    Log in here
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== LOGIN VIEW ==================== -->
+      <section id="loginView" class="py-5 d-none">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-7 col-lg-5">
+              <div class="lb-glass p-4 p-md-5">
+                <div class="mb-4">
+                  <h1 class="h3 fw-bold mb-1">Welcome back</h1>
+                  <p class="lb-text-muted mb-0">
+                    Sign in to access your 7-language lessons, bookmarked words, and quiz history.
+                  </p>
+                </div>
+
+                <form id="loginForm" novalidate>
+                  <div class="mb-3">
+                    <label for="loginEmail" class="form-label">Email Address</label>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="loginEmail"
+                      placeholder="you@example.com"
+                      required
+                      autocomplete="email"
+                    />
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="loginPassword" class="form-label">Password</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      id="loginPassword"
+                      placeholder="Enter your password"
+                      required
+                      autocomplete="current-password"
+                    />
+                  </div>
+
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-lb-primary py-2.5">
+                      Login to Dashboard
+                    </button>
+                    <button type="button" class="btn btn-lb-demo py-2.5" data-action="demo-login">
+                      <i class="bi bi-lightning-charge-fill me-1" aria-hidden="true"></i>
+                      Demo Quick Login
+                    </button>
+                  </div>
+                </form>
+
+                <p class="text-center lb-text-muted small mt-4 mb-0">
+                  New to LinguaBridge?
+                  <a href="#register" data-route="register" class="fw-semibold text-decoration-none lb-text-teal">
+                    Create a free account
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== DASHBOARD VIEW ==================== -->
+      <section id="dashboardView" class="py-4 d-none">
+        <div class="container">
+          <!-- Dashboard Header & Mode Switcher -->
+          <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+              <h1 class="h3 fw-bold mb-1">Learning &amp; Quiz Studio</h1>
+              <p class="lb-text-muted small mb-0">
+                Daily goal: <strong class="lb-text-primary" id="dashDailyGoal">15 mins/day</strong>
+                &middot; Preferred language: <strong class="lb-text-primary" id="dashPreferredLang">Spanish</strong>
+              </p>
+            </div>
+
+            <div class="d-flex flex-wrap align-items-center gap-3">
+              <!-- Live XP Counter -->
+              <div class="lb-xp-highlight font-mono-tabular" aria-live="polite">
+                <i class="bi bi-lightning-charge-fill me-1" aria-hidden="true"></i>
+                <span id="totalXpValue">0</span> XP
+              </div>
+
+              <!-- Mode Switcher -->
+              <div class="lb-segmented" role="tablist" aria-label="Learning mode">
+                <button
+                  type="button"
+                  class="lb-segmented-btn active"
+                  id="modeLessonsBtn"
+                  data-mode="lessons"
+                  role="tab"
+                  aria-selected="true"
+                >
+                  <i class="bi bi-book me-1" aria-hidden="true"></i>Daily Lessons
+                </button>
+                <button
+                  type="button"
+                  class="lb-segmented-btn"
+                  id="modeQuizBtn"
+                  data-mode="quiz"
+                  role="tab"
+                  aria-selected="false"
+                >
+                  <i class="bi bi-patch-question me-1" aria-hidden="true"></i>Practice Quiz
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7-Language Switcher -->
+          <div class="lb-glass p-3 p-md-4 mb-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
+              <span class="small fw-semibold lb-text-muted">Select Language (7 supported)</span>
+              <span class="small lb-text-subtle font-mono-tabular" id="activeLocaleMeta"></span>
+            </div>
+            <div class="lb-lang-switcher" id="dashboardLangSwitcher" role="tablist" aria-label="Language switcher"></div>
+          </div>
+
+          <!-- Graceful Speech Notice -->
+          <div id="dashboardSpeechNotice" class="lb-speech-notice d-none mb-4" role="status" aria-live="polite"></div>
+
+          <!-- DAILY LESSONS PANEL -->
+          <div id="lessonsPanel">
+            <!-- Word of the Day Banner -->
+            <div class="lb-wotd-banner mb-4">
+              <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                  <div class="d-flex align-items-center gap-2 mb-1">
+                    <span class="small fw-bold lb-text-teal">
+                      <i class="bi bi-sun-fill me-1" style="color: var(--lb-amber);" aria-hidden="true"></i>
+                      Word of the Day
+                    </span>
+                    <span class="lb-text-subtle small">&middot;</span>
+                    <span class="small lb-text-muted fw-medium" id="wotdCategory"></span>
+                  </div>
+                  <div class="lb-lesson-native mb-1" id="wotdNative"></div>
+                  <div class="lb-phonetic-text small mb-1" id="wotdPhonetic"></div>
+                  <div class="small lb-text-primary fw-medium" id="wotdMeaning"></div>
+                </div>
+                <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                  <button type="button" class="lb-listen-btn" id="wotdListenBtn">
+                    <i class="bi bi-volume-up-fill" aria-hidden="true"></i>
+                    <span id="wotdListenText">Listen</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Filter Tabs + iOS Sliding Toggle Switches (#34C759 Green) -->
+            <div class="lb-glass p-3 mb-4">
+              <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-3">
+                <!-- Category Filter Tabs -->
+                <div class="lb-segmented" id="categoryFilterBar" role="tablist" aria-label="Lesson category filter">
+                  <button type="button" class="lb-segmented-btn active" data-category="All" role="tab" aria-selected="true">
+                    All
+                  </button>
+                  <button type="button" class="lb-segmented-btn" data-category="Vocabulary" role="tab" aria-selected="false">
+                    Vocabulary
+                  </button>
+                  <button type="button" class="lb-segmented-btn" data-category="Daily Phrases" role="tab" aria-selected="false">
+                    Daily Phrases
+                  </button>
+                  <button type="button" class="lb-segmented-btn" data-category="Grammar" role="tab" aria-selected="false">
+                    Grammar
+                  </button>
+                </div>
+
+                <!-- 3 iOS Sliding Toggle Switches -->
+                <div class="d-flex flex-wrap align-items-center gap-3 gap-md-4">
+                  <label class="ios-switch-label" for="toggleSlowAudio">
+                    <span class="ios-switch">
+                      <input type="checkbox" id="toggleSlowAudio" />
+                      <span class="ios-switch-slider"></span>
+                    </span>
+                    <span>Slow Audio (0.65x)</span>
+                  </label>
+
+                  <label class="ios-switch-label" for="toggleHidePhonetics">
+                    <span class="ios-switch">
+                      <input type="checkbox" id="toggleHidePhonetics" />
+                      <span class="ios-switch-slider"></span>
+                    </span>
+                    <span>Hide Phonetics</span>
+                  </label>
+
+                  <label class="ios-switch-label" for="toggleBookmarkedOnly">
+                    <span class="ios-switch">
+                      <input type="checkbox" id="toggleBookmarkedOnly" />
+                      <span class="ios-switch-slider"></span>
+                    </span>
+                    <span>
+                      Bookmarked Only (<span id="bookmarkCountBadge" class="tabular-nums">0</span>)
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- Lessons Grid -->
+            <div class="row g-4" id="lessonsGrid" aria-live="polite"></div>
+
+            <!-- Empty State when Bookmarked Only finds no matches -->
+            <div id="emptyLessonsState" class="lb-glass p-5 text-center d-none">
+              <i class="bi bi-star fs-2 lb-text-subtle d-block mb-2" aria-hidden="true"></i>
+              <h2 class="h5 fw-bold mb-1">No bookmarked lessons match this filter</h2>
+              <p class="lb-text-muted small mb-3">
+                Tap the star button on any lesson card to bookmark it, or switch off Bookmarked Only to browse all lessons.
+              </p>
+              <button type="button" class="btn btn-lb-outline btn-sm" id="resetCategoryBtn">
+                Show All Lessons
+              </button>
+            </div>
+          </div>
+
+          <!-- PRACTICE QUIZ PANEL -->
+          <div id="quizPanel" class="d-none">
+            <div class="row g-4">
+              <div class="col-lg-8">
+                <div class="lb-glass p-4 p-md-5">
+                  <!-- Active Quiz Question -->
+                  <div id="quizActiveView">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pb-3 mb-4 lb-divider-bottom">
+                      <div>
+                        <span class="small fw-semibold lb-text-teal" id="quizLangLabel"></span>
+                        <div class="small lb-text-subtle font-mono-tabular" id="quizProgressText">Question 1 of 6</div>
+                      </div>
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="small fw-semibold font-mono-tabular lb-text-primary">
+                          Score: <span id="quizLiveScore">0</span>/<span id="quizTotalQuestions">6</span>
+                        </div>
+                        <div class="lb-xp-highlight font-mono-tabular py-1 px-2">
+                          +<span id="quizSessionXp">0</span> XP
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="progress mb-4" style="height: 8px; background-color: var(--lb-segmented-bg);">
+                      <div
+                        class="progress-bar"
+                        id="quizProgressBar"
+                        role="progressbar"
+                        style="width: 0%; background-color: var(--lb-teal);"
+                        aria-valuenow="0"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      ></div>
+                    </div>
+
+                    <h2 class="h4 fw-bold mb-3" id="quizQuestionText"></h2>
+
+                    <div
+                      id="quizNativePromptBox"
+                      class="d-none align-items-center justify-content-between flex-wrap gap-3 p-3 lb-glass-inset mb-4"
+                    >
+                      <div class="lb-lesson-native mb-0" id="quizNativePromptText"></div>
+                      <button type="button" class="lb-listen-btn" id="quizPromptListenBtn">
+                        <i class="bi bi-volume-up-fill" aria-hidden="true"></i>
+                        <span>Listen</span>
+                      </button>
+                    </div>
+
+                    <div class="d-grid gap-2 mb-4" id="quizOptionsContainer"></div>
+
+                    <div id="quizFeedbackBox" class="d-none rounded-3 p-3 mb-4" role="status" aria-live="polite">
+                      <div class="d-flex align-items-start gap-2">
+                        <i id="quizFeedbackIcon" class="bi fs-5 flex-shrink-0" aria-hidden="true"></i>
+                        <div>
+                          <div class="fw-bold" id="quizFeedbackTitle"></div>
+                          <div class="small mt-1" id="quizFeedbackExplanation"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                      <button type="button" class="btn btn-lb-outline btn-sm" id="restartQuizBtn">
+                        Restart Quiz
+                      </button>
+                      <button type="button" class="btn btn-lb-primary d-none" id="quizNextBtn">
+                        Next Question &rarr;
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Quiz Summary View -->
+                  <div id="quizSummaryView" class="d-none text-center py-3">
+                    <div
+                      class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                      style="width: 64px; height: 64px; background-color: var(--lb-teal-soft); color: var(--lb-teal-text);"
+                    >
+                      <i class="bi bi-trophy-fill fs-3" aria-hidden="true"></i>
+                    </div>
+                    <h2 class="h3 fw-bold mb-1" id="quizSummaryHeadline">Quiz Completed!</h2>
+                    <p class="lb-text-muted mb-4" id="quizSummarySubtext"></p>
+
+                    <div class="row g-3 justify-content-center mb-4">
+                      <div class="col-4">
+                        <div class="p-3 lb-glass-inset">
+                          <div class="lb-stat-value" id="summaryScoreVal">0/6</div>
+                          <div class="small lb-text-muted">Final Score</div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="p-3 lb-glass-inset">
+                          <div class="lb-stat-value" id="summaryAccuracyVal">0%</div>
+                          <div class="small lb-text-muted">Accuracy</div>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="p-3 rounded-3" style="background-color: var(--lb-amber-soft); border: 1px solid var(--lb-amber-border);">
+                          <div class="lb-stat-value" style="color: var(--lb-amber-ink);" id="summaryXpVal">+0</div>
+                          <div class="small" style="color: var(--lb-amber-ink);">XP Earned</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div id="quizSaveStatus" class="small fw-semibold mb-4" style="color: var(--lb-success-ink);"></div>
+
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                      <button type="button" class="btn btn-lb-primary" id="playAgainBtn">
+                        Practice Again (New Shuffle)
+                      </button>
+                      <a href="#profile" data-route="profile" class="btn btn-lb-outline">
+                        View Full History on Profile
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sidebar: Recent Quiz Results -->
+              <div class="col-lg-4">
+                <div class="lb-glass p-4 h-100">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="h6 fw-bold mb-0">Recent Quiz Results</h3>
+                    <a href="#profile" data-route="profile" class="small fw-semibold text-decoration-none lb-text-teal">
+                      All History &rarr;
+                    </a>
+                  </div>
+                  <div id="recentQuizList" class="d-flex flex-column gap-2"></div>
+                  <p id="recentQuizEmpty" class="small lb-text-muted mb-0">
+                    Complete your first quiz to save scores and earn XP!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROFILE VIEW ==================== -->
+      <section id="profileView" class="py-4 d-none">
+        <div class="container">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+              <h1 class="h3 fw-bold mb-1">User Profile &amp; Progress</h1>
+              <p class="lb-text-muted small mb-0">
+                Manage your account preferences and review your saved quiz performance.
+              </p>
+            </div>
+            <a href="#dashboard" data-route="dashboard" class="btn btn-lb-primary btn-sm px-3 py-2 align-self-start">
+              Back to Learn &amp; Quiz
+            </a>
+          </div>
+
+          <!-- Learning Analytics Cards -->
+          <div class="row g-3 mb-4">
+            <div class="col-6 col-lg-3">
+              <div class="lb-glass p-3 p-md-4 h-100">
+                <div class="small lb-text-muted fw-semibold mb-1">Total Quizzes Taken</div>
+                <div class="lb-stat-value" id="profTotalQuizzes">0</div>
+                <div class="small lb-text-subtle mt-1">Completed rounds</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+              <div class="lb-glass p-3 p-md-4 h-100">
+                <div class="small lb-text-muted fw-semibold mb-1">Average Quiz Accuracy</div>
+                <div class="lb-stat-value lb-text-teal" id="profAvgAccuracy">0%</div>
+                <div class="small lb-text-subtle mt-1">Across all attempts</div>
+              </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+              <div class="lb-glass p-3 p-md-4 h-100">
+                <div class="small lb-text-muted fw-semibold mb-1">Most Practiced Language</div>
+                <div class="h4 fw-bold mb-0 mt-1 lb-text-primary" id="profFavLang">Spanish</div>
+                <div class="small lb-text-subtle mt-1">
+                  Bookmarked cards: <span class="font-mono-tabular fw-semibold" id="profSavedCount">0</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-6 col-lg-3">
+              <div class="lb-glass lb-xp-card p-3 p-md-4 h-100">
+                <div class="small fw-semibold mb-1" style="color: var(--lb-amber-ink);">Total XP Earned</div>
+                <div class="lb-stat-value" style="color: var(--lb-amber-ink);" id="profTotalXp">0</div>
+                <div class="small mt-1" style="color: var(--lb-amber-ink);">Saved in browser storage</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Details + Edit Profile Form -->
+          <div class="row g-4 mb-4">
+            <div class="col-lg-5">
+              <div class="lb-glass p-4 h-100">
+                <div class="d-flex align-items-center gap-3 pb-3 mb-3 lb-divider-bottom">
+                  <div
+                    class="d-flex align-items-center justify-content-center rounded-3 fw-bold fs-4 text-white flex-shrink-0"
+                    style="width: 56px; height: 56px; background: linear-gradient(135deg, #0D9488, #14B8A6);"
+                    id="profAvatarInitial"
+                  >
+                    A
+                  </div>
+                  <div>
+                    <h2 class="h5 fw-bold mb-0" id="profDisplayName">Learner</h2>
+                    <div class="small lb-text-muted" id="profDisplayEmail">user@example.com</div>
+                  </div>
+                </div>
+
+                <dl class="row mb-0 g-2 small">
+                  <dt class="col-5 lb-text-subtle fw-semibold">Full Name</dt>
+                  <dd class="col-7 lb-text-primary fw-semibold mb-2" id="profDetailName"></dd>
+
+                  <dt class="col-5 lb-text-subtle fw-semibold">Email</dt>
+                  <dd class="col-7 lb-text-primary mb-2" id="profDetailEmail"></dd>
+
+                  <dt class="col-5 lb-text-subtle fw-semibold">Preferred Language</dt>
+                  <dd class="col-7 lb-text-primary fw-semibold mb-2" id="profDetailLang"></dd>
+
+                  <dt class="col-5 lb-text-subtle fw-semibold">Daily Learning Goal</dt>
+                  <dd class="col-7 lb-text-primary mb-2" id="profDetailGoal"></dd>
+
+                  <dt class="col-5 lb-text-subtle fw-semibold">Member Since</dt>
+                  <dd class="col-7 lb-text-primary font-mono-tabular mb-0" id="profDetailSince"></dd>
+                </dl>
+              </div>
+            </div>
+
+            <div class="col-lg-7">
+              <div class="lb-glass p-4 h-100">
+                <h2 class="h5 fw-bold mb-1">Edit Profile Details</h2>
+                <p class="small lb-text-muted mb-3">
+                  Update your name, preferred language, daily learning goal, or password directly in localStorage.
+                </p>
+
+                <form id="editProfileForm" novalidate>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="editFullName" class="form-label">Full Name</label>
+                      <input type="text" class="form-control" id="editFullName" minlength="2" maxlength="80" required />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="editPreferredLang" class="form-label">Preferred Language</label>
+                      <select class="form-select" id="editPreferredLang" required></select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="editDailyGoal" class="form-label">Daily Learning Goal</label>
+                      <select class="form-select" id="editDailyGoal" required></select>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="editNewPassword" class="form-label">New Password (Optional)</label>
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="editNewPassword"
+                        placeholder="Leave blank to keep current"
+                        minlength="6"
+                        autocomplete="new-password"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="mt-4 d-flex justify-content-end">
+                    <button type="submit" class="btn btn-lb-primary">Save Profile Changes</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Quiz History Table -->
+          <div class="lb-glass overflow-hidden">
+            <div class="p-4 lb-divider-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <div>
+                <h2 class="h5 fw-bold mb-0">My Quiz History</h2>
+                <p class="small lb-text-muted mb-0">Every completed practice round saved to your browser account</p>
+              </div>
+              <span class="small lb-text-subtle font-mono-tabular" id="profHistoryCount">0 records</span>
+            </div>
+
+            <div class="table-responsive d-none" id="profHistoryTableWrap">
+              <table class="table lb-table mb-0">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Score</th>
+                    <th scope="col">Accuracy</th>
+                    <th scope="col">XP Earned</th>
+                    <th scope="col">Date &amp; Time</th>
+                  </tr>
+                </thead>
+                <tbody id="profHistoryTbody"></tbody>
+              </table>
+            </div>
+
+            <div class="p-5 text-center" id="profHistoryEmpty">
+              <i class="bi bi-journal-check fs-2 lb-text-subtle d-block mb-2" aria-hidden="true"></i>
+              <h3 class="h6 fw-bold mb-1">No quiz attempts yet</h3>
+              <p class="small lb-text-muted mb-3">
+                Head to the Learn &amp; Quiz dashboard and complete a practice round to build your history.
+              </p>
+              <a href="#dashboard" data-route="dashboard" class="btn btn-lb-primary btn-sm">
+                Take Your First Quiz
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="lb-footer py-4 mt-5">
+      <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+        <div class="fw-semibold lb-text-primary">LinguaBridge</div>
+        <div class="text-center text-md-end">
+          7 Languages &middot; Spanish, French, German, English, Hindi, Japanese &amp; Marathi
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>
